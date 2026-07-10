@@ -90,6 +90,21 @@ POST /prep   devuelve la primera página LIMPIA en PNG, SIN OCR (funciona sin mo
 GET  /health -> { status, models_loaded, prep_ready }
 ```
 
+## Instalación nativa (binario prebuilt)
+
+Cada tag `v*` publica un **binario musl estático** (workflow `release.yml`) —
+un fichero, sin toolchain, sin glibc que ajustar. Bájalo del último release:
+
+```bash
+curl -sSL -o ocr4rs.tar.gz \
+  https://github.com/noninapizzicas/ocr4rs/releases/latest/download/ocr4rs-x86_64-linux-musl.tar.gz
+tar xzf ocr4rs.tar.gz && sudo mv ocr4rs /usr/local/bin/
+./scripts/get-models.sh /opt/ocr4rs-models
+OCR4RS_MODELS=/opt/ocr4rs-models ocr4rs serve --host 127.0.0.1 --port 8090
+```
+
+Para cortar un release: `git tag v0.1.0 && git push --tags`.
+
 ## Docker
 
 Imagen **independiente** (distroless, Rust puro, ~47 MB — sin navegador, sin
