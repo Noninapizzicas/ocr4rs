@@ -1,0 +1,51 @@
+# Release — binario prebuilt en cada tag `v*`. musl ESTÁTICO: sin dependencia de
+# glibc → un fichero que corre en cualquier Linux x86_64 (esquiva la deriva de
+# glibc que obliga a fijar la generación de Debian en el Dockerfile). El consumidor
+# (vps-setup de Enki) lo DESCARGA en vez de compilar — cero toolchain en el VPS.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: build musl estático · publica release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain Rust (+ target musl)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-musl
+
+      - name: musl-tools (linker)
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Compilar el binario estático
+        run: cargo build --release --target x86_64-unknown-linux-musl --bin ocr4rs
+
+      - name: Empaquetar + sha256
+        run: |
+          BIN=target/x86_64-unknown-linux-musl/release/ocr4rs
+          test -x "$BIN"
+          # Confirma que es ESTÁTICO (sin dependencias dinámicas).
+          if ldd "$BIN" 2>&1 | grep -qv 'not a dynamic executable'; then
+            echo "AVISO: el binario no es estático:"; ldd "$BIN" || true
+          fi
+          tar czf ocr4rs-x86_64-linux-musl.tar.gz -C "$(dirname "$BIN")" ocr4rs
+          sha256sum ocr4rs-x86_64-linux-musl.tar.gz > ocr4rs-x86_64-linux-musl.tar.gz.sha256
+
+      - name: Publicar el release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ocr4rs-x86_64-linux-musl.tar.gz
+            ocr4rs-x86_64-linux-musl.tar.gz.sha256
+          generate_release_notes: true
