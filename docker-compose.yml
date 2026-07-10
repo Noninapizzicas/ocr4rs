@@ -1,0 +1,30 @@
+# Despliegue conjunto de los órganos web (conveniencia dev/local).
+#
+# Cada órgano es una imagen INDEPENDIENTE — se especializan por separado y se
+# encuentran en el bus de Enki, no en el mismo contenedor. Este compose sólo
+# los levanta juntos; no los acopla.
+#
+# Cada imagen se construye desde su propio repo:
+#   crawl4rs → docker build -t crawl4rs:latest   .   (en el repo D-os)
+#   ocr4rs   → docker build -t ocr4rs:latest      .   (en este repo)
+#
+# Modelos OCR (una vez, en el host):
+#   ./scripts/get-models.sh models
+#
+# Arranque:  docker compose up
+services:
+  # Web (HTML / PDF digital) → Markdown.
+  crawl4rs:
+    image: crawl4rs:latest
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  # Imagen / PDF escaneado → texto. Sin modelos: 503 honesto.
+  ocr4rs:
+    image: ocr4rs:latest
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./models:/models:ro
+    restart: unless-stopped
