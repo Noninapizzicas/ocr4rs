@@ -47,6 +47,26 @@ ocr4rs serve --port 8090
 #   GET  /health                            -> { status, models_loaded }
 ```
 
+## Docker
+
+Imagen **independiente** (distroless, Rust puro, ~47 MB — sin navegador, sin
+ONNX Runtime). Los modelos se montan como volumen; sin ellos, `/ocr` da 503.
+
+```bash
+./scripts/get-models.sh models            # una vez
+docker build -t ocr4rs:latest .
+docker run -p 8090:8090 -v "$PWD/models:/models:ro" ocr4rs:latest
+```
+
+Cada órgano web es su propia imagen (se especializan por separado y se
+encuentran en el bus de Enki, no en el mismo contenedor). El
+`docker-compose.yml` levanta Crawl4RS y OCR4RS juntos por conveniencia, sin
+acoplarlos:
+
+```bash
+docker compose up      # crawl4rs:8080 + ocr4rs:8090
+```
+
 ## Estructura
 
 | Crate | Responsabilidad |
