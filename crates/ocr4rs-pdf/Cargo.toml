@@ -1,19 +1,15 @@
 [package]
-name = "ocr4rs-core"
+name = "ocr4rs-pdf"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Núcleo de OCR4RS: motor de OCR puro Rust (ocrs/rten) — imagen → texto + líneas."
+description = "Extracción del ráster embebido en PDF escaneado (lopdf) — Rust puro, no renderiza vectores."
 authors.workspace = true
 
 [dependencies]
-ocr4rs-prep = { workspace = true }
-ocr4rs-pdf = { workspace = true }
-ocrs = { workspace = true }
-rten = { workspace = true }
 image = { workspace = true }
-serde = { workspace = true }
+lopdf = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }

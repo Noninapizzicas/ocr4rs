@@ -1,19 +1,16 @@
 [package]
-name = "ocr4rs-core"
+name = "ocr4rs-prep"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Núcleo de OCR4RS: motor de OCR puro Rust (ocrs/rten) — imagen → texto + líneas."
+description = "Pre-proceso de imagen de OCR4RS (grises, normalizar, deskew, denoise, binarizar) — Rust puro, sin modelos."
 authors.workspace = true
 
 [dependencies]
-ocr4rs-prep = { workspace = true }
-ocr4rs-pdf = { workspace = true }
-ocrs = { workspace = true }
-rten = { workspace = true }
 image = { workspace = true }
+imageproc = { workspace = true }
 serde = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }
