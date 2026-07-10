@@ -9,6 +9,12 @@
 
 pub mod engine;
 pub mod error;
+pub mod pipeline;
+
+/// Re-exporta el pre-proceso para que quien use el núcleo no necesite añadir
+/// `ocr4rs-prep` a mano (p. ej. el endpoint `/prep` del servidor).
+pub use ocr4rs_prep as prep;
 
 pub use engine::{Ocr, OcrLine, OcrOutput, DETECTION_MODEL, RECOGNITION_MODEL};
 pub use error::{Error, Result};
+pub use pipeline::{preparar_primera_pagina, PageOutput, ProcessConfig, ProcessOutput, SourceKind};

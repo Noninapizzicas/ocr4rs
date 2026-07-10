@@ -2,6 +2,8 @@
 resolver = "2"
 members = [
     "crates/ocr4rs-core",
+    "crates/ocr4rs-prep",
+    "crates/ocr4rs-pdf",
     "crates/ocr4rs-cli",
     "crates/ocr4rs-server",
 ]
@@ -17,12 +19,20 @@ authors = ["OCR4RS contributors"]
 
 [workspace.dependencies]
 ocr4rs-core = { path = "crates/ocr4rs-core", version = "0.0.1" }
+ocr4rs-prep = { path = "crates/ocr4rs-prep", version = "0.0.1" }
+ocr4rs-pdf = { path = "crates/ocr4rs-pdf", version = "0.0.1" }
 ocr4rs-server = { path = "crates/ocr4rs-server", version = "0.0.1" }
 
 # Motor OCR puro Rust (ocrs sobre rten; sin ONNX Runtime ni MNN)
 ocrs = "0.12"
 rten = "0.24"
 image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+
+# Pre-proceso de imagen (deskew, denoise, binarización) — Rust puro.
+imageproc = { version = "0.25", default-features = false }
+# Parser PDF puro Rust: se usa para EXTRAER el ráster embebido de un escaneo,
+# nunca para renderizar vectores.
+lopdf = { version = "0.36", default-features = false, features = ["rayon"] }
 
 tokio = { version = "1", default-features = false }
 serde = { version = "1", features = ["derive"] }

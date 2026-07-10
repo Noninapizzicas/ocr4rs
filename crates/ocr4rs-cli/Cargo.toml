@@ -15,6 +15,7 @@ path = "src/main.rs"
 [dependencies]
 ocr4rs-core = { workspace = true }
 ocr4rs-server = { workspace = true }
+image = { workspace = true }
 clap = { workspace = true }
 anyhow = { workspace = true }
 serde_json = { workspace = true }

@@ -72,9 +72,15 @@ impl Ocr {
 
     /// Reconoce el texto de una imagen (bytes PNG/JPEG/WebP).
     pub fn recognize_bytes(&self, image_bytes: &[u8]) -> Result<OcrOutput> {
-        let img = image::load_from_memory(image_bytes)
-            .map_err(|e| Error::Image(e.to_string()))?
-            .into_rgb8();
+        let img = image::load_from_memory(image_bytes).map_err(|e| Error::Image(e.to_string()))?;
+        self.recognize_image(&img)
+    }
+
+    /// Reconoce el texto de una imagen ya decodificada (p. ej. tras el
+    /// pre-proceso o extraída de un PDF). El pre-proceso de OCR4RS produce
+    /// grises; aquí se convierte a RGB para el reconocedor.
+    pub fn recognize_image(&self, img: &image::DynamicImage) -> Result<OcrOutput> {
+        let img = img.to_rgb8();
         let (w, h) = img.dimensions();
         let source = ImageSource::from_bytes(img.as_raw(), (w, h))
             .map_err(|e| Error::Image(e.to_string()))?;

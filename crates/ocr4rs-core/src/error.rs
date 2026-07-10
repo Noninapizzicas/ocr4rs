@@ -29,4 +29,16 @@ pub enum Error {
     /// Fallo durante la inferencia OCR.
     #[error("fallo de OCR: {0}")]
     Ocr(String),
+
+    /// El PDF trae capa de texto: es digital, no escaneado → usar Crawl4RS.
+    #[error("el PDF es digital (tiene capa de texto): usa crawl4rs, no OCR")]
+    IsDigitalPdf,
+
+    /// Entrada de formato no soportado (ni imagen ni PDF escaneado legible).
+    #[error("entrada no soportada: {0}")]
+    UnsupportedInput(String),
+
+    /// Fallo procesando el PDF de entrada.
+    #[error("fallo de PDF: {0}")]
+    Pdf(String),
 }
