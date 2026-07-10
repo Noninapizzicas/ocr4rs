@@ -1,0 +1,21 @@
+[package]
+name = "ocr4rs-server"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "API HTTP de OCR4RS (axum). POST /ocr → texto; degrada 503 sin modelos."
+authors.workspace = true
+
+[dependencies]
+ocr4rs-core = { workspace = true }
+axum = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "sync"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }
+http-body-util = "0.1"

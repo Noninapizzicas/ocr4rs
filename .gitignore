@@ -1,0 +1,9 @@
+/target
+**/*.rs.bk
+
+# Modelos OCR: se aportan en runtime, NO se versionan (pesan MB)
+/models/
+*.rten
+
+.env
+.DS_Store

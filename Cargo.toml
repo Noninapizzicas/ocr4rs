@@ -1,0 +1,41 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/ocr4rs-core",
+    "crates/ocr4rs-cli",
+    "crates/ocr4rs-server",
+]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.80"
+license = "MIT"
+repository = "https://github.com/noninapizzicas/ocr4rs"
+description = "OCR4RS — órgano de OCR en Rust puro: imagen/PDF escaneado → texto, sin runtime nativo ni Python."
+authors = ["OCR4RS contributors"]
+
+[workspace.dependencies]
+ocr4rs-core = { path = "crates/ocr4rs-core", version = "0.0.1" }
+ocr4rs-server = { path = "crates/ocr4rs-server", version = "0.0.1" }
+
+# Motor OCR puro Rust (ocrs sobre rten; sin ONNX Runtime ni MNN)
+ocrs = "0.12"
+rten = "0.24"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+
+tokio = { version = "1", default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+clap = { version = "4", features = ["derive"] }
+axum = "0.8"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
